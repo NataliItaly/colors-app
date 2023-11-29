@@ -15,7 +15,8 @@
   </head>
   <body>
     <div class="container">
-      <main>
+      <header>
+        <h1 class="create-title">Create new color scheme</h1>
         <form action="@" class="color-form" id="color-form">
           <div class="color-description">
             <p class="main-color-value color-data"></p>
@@ -37,9 +38,20 @@
             <option value="triad">Triad</option>
             <option value="quad">Quad</option>
           </select>
+          <input
+            class="color-title-input form-box"
+            type="text"
+            name="color-scheme-title"
+            id="color-scheme-title"
+            value=""
+            placeholder="Title you color scheme"
+          />
           <button class="get-color-btn form-box">Get color scheme</button>
         </form>
-        <div class="colors-block" id="colors-block"></div>
+        <h2 class="schemes-title">You don't have any color scheme yet...</h2>
+      </header>
+      <main>
+        <div class="color-schemes"></div>
       </main>
       <footer>
         This App is created by
