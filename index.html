@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Color Scheme Generator</title>
+  </head>
+  <body>
+    <div class="container">
+      <main>
+        <form action="@" class="color-form" id="color-form">
+          <div class="color-description">
+            <p class="main-color-value color-data"></p>
+            <p class="main-color-name color-data"></p>
+          </div>
+          <input
+            type="color"
+            name="color-input"
+            class="form-box color-input"
+            id="color-input"
+          />
+          <select name="color-select" class="form-box" id="color-select">
+            <option value="monochrome">Monochrome</option>
+            <option value="monochrome-dark">Monochrome-dark</option>
+            <option value="monochrome-light">Monochrome-light</option>
+            <option value="analogic">Analogic</option>
+            <option value="complement">Complement</option>
+            <option value="analogic-complement">Analogic-complement</option>
+            <option value="triad">Triad</option>
+            <option value="quad">Quad</option>
+          </select>
+          <button class="get-color-btn form-box">Get color scheme</button>
+        </form>
+        <div class="colors-block" id="colors-block"></div>
+      </main>
+      <footer>
+        This App is created by
+        <a href="https://nataliitaly.github.io/rsschool-cv/" target="_blank"
+          >Krylova Nataliya</a
+        >
+      </footer>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
