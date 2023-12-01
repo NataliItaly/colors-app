@@ -55,7 +55,7 @@ colorForm.addEventListener("submit", function (event) {
               : "Your color schemes";
           //colorSchemesBlock.prepend(generateColorScheme(scheme));
           fetch(
-            `https://www.thecolorapi.com/scheme?hex=${color}&format=json&mode=${colorsMode}&count=8`
+            `https://www.thecolorapi.com/scheme?hex=${color}&format=json&mode=${colorsMode}&count=5`
           )
             .then((response) => response)
             .then((data) => {
