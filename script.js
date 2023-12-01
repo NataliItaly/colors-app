@@ -2,72 +2,86 @@ const colorForm = document.getElementById("color-form");
 const colorInput = document.getElementById("color-input");
 const mainColorValue = document.querySelector(".main-color-value");
 const mainColorName = document.querySelector(".main-color-name");
-const colorselect = document.getElementById("color-select");
+const colorSelect = document.getElementById("color-select");
 const mainElement = document.querySelector("main");
 const colorSchemesBlock = document.querySelector(".color-schemes");
 const colorSchemeTitleInput = document.getElementById("color-scheme-title");
 const schemesTitle = document.querySelector(".schemes-title");
-const colorSchemesObj = [];
+
+let userColorSchemes = JSON.parse(localStorage.getItem("userColorSchemes"));
+console.log(userColorSchemes);
+if (!userColorSchemes) {
+  userColorSchemes = [];
+} else {
+  userColorSchemes.forEach((scheme) => {
+    colorSchemesBlock.prepend(generateColorScheme(scheme));
+    console.log(generateColorScheme(scheme));
+  });
+}
+
+console.log(userColorSchemes);
 
 colorForm.addEventListener("submit", function (event) {
   event.preventDefault();
   const color = colorInput.value.slice(1);
-  const colorsMode = colorselect.value;
+  const colorsMode = colorSelect.value;
+  const newColor = {
+    colorValue: colorInput.value,
+    mode: colorsMode,
+    schemeTitle: colorSchemeTitleInput.value,
+    schemeColors: [],
+  };
 
   fetch(`https://www.thecolorapi.com/id?hex=${color}&format=json`)
     .then((response) => response)
-    .then((data) => {
-      fetch(data.url)
+    .then((scheme) => {
+      fetch(scheme.url)
         .then((response) => response.json())
-        .then((data) => {
-          mainColorName.textContent = data.name.value;
-          mainColorValue.textContent = data.hex.value;
+        .then((scheme) => {
+          mainColorName.textContent = scheme.name.value;
+          mainColorValue.textContent = scheme.hex.value;
 
-          // generate first item with choosen color
-          const colorsBlock = document.createElement("div");
-          colorsBlock.classList.add("colors-block");
-          colorsBlock.innerHTML =
-            `
-                      <h2 class="colors-block-title">${colorSchemeTitleInput.value}</h2>
-                      <button class="delete-scheme-btn" id="delete-scheme-btn"></button>
-                      ` +
-            generateColorItemHTML(data.hex.value, data.name.value);
+          newColor.colorName = scheme.name.value;
+          newColor.schemeColors.push({
+            colorValue: scheme.hex.value,
+            colorName: scheme.name.value,
+          });
 
-          /* <div class="color-item">
-                        <div class="color" style="background: ${data.hex.value}"></div>
-                        <h3 class="color-title color-data">${data.name.value}</h3>
-                        <div class="color-subtitle color-data">${data.hex.value}</div>
-                      </div> */
-          colorSchemesBlock.prepend(colorsBlock);
+          //console.log(newColor);
 
           schemesTitle.textContent =
             colorSchemesBlock.childNodes.length === 1
               ? "Your color scheme"
               : "Your color schemes";
+          //colorSchemesBlock.prepend(generateColorScheme(scheme));
           fetch(
-            `https://www.thecolorapi.com/scheme?hex=${color}&format=json&mode=${colorsMode}&count=5`
+            `https://www.thecolorapi.com/scheme?hex=${color}&format=json&mode=${colorsMode}&count=8`
           )
             .then((response) => response)
             .then((data) => {
               fetch(data.url)
                 .then((response) => response.json())
                 .then((data) => {
-                  let complementColorsHTML = "";
-                  // generate color scheme
+                  console.log(data);
+
                   data.colors.forEach((color) => {
-                    complementColorsHTML += generateColorItemHTML(
-                      color.hex.value,
-                      color.name.value
-                    );
-                    /* `
-                      <div class="color-item">
-                        <div class="color" style="background: ${color.hex.value}"></div>
-                        <h3 class="color-title color-data">${color.name.value}</h3>
-                        <div class="color-subtitle color-data">${color.hex.value}</div>
-                      </div>
-                    `; */
+                    newColor.schemeColors.push({
+                      colorValue: color.hex.value,
+                      colorName: color.name.value,
+                    });
+                    //console.log(color.hex.value);
+                    //console.log(color.name.value);
                   });
-                  colorsBlock.innerHTML += complementColorsHTML;
+                  userColorSchemes.push(newColor);
+                  console.log(userColorSchemes);
+                  console.log(newColor);
+                  localStorage.setItem(
+                    "userColorSchemes",
+                    JSON.stringify(userColorSchemes)
+                  );
+
+                  // generate color scheme
+                  colorSchemesBlock.prepend(generateColorScheme(newColor));
                 });
             });
         });
@@ -88,7 +102,15 @@ window.addEventListener("click", function (e) {
     deleteSchemeBtns.forEach((btn, i) => {
       if (e.target === btn) index = i;
     });
+    // remove colorBlock from DOM
     colorBlocks[index].remove();
+
+    // remove color from userColorShemes
+    console.log(userColorSchemes);
+    userColorSchemes.splice(index, 1);
+    console.log(userColorSchemes);
+    localStorage.setItem("userColorSchemes", JSON.stringify(userColorSchemes));
+
     console.log(colorBlocks.length);
     if (colorBlocks.length === 1) {
       mainColorName.textContent = "";
@@ -104,12 +126,32 @@ window.addEventListener("click", function (e) {
   }
 });
 
+function generateColorScheme(scheme) {
+  // generate item with choosen color
+  const colorsBlock = document.createElement("div");
+  colorsBlock.classList.add("colors-block");
+  colorsBlock.innerHTML = `
+    <h2 class="colors-block-title">${scheme.schemeTitle}</h2>
+    <button class="delete-scheme-btn" id="delete-scheme-btn"></button>
+    `;
+  colorsArrayHTML = "";
+  scheme.schemeColors.forEach(
+    (color) =>
+      (colorsArrayHTML += generateColorItemHTML(
+        color.colorValue,
+        color.colorName
+      ))
+  );
+  colorsBlock.innerHTML += colorsArrayHTML;
+  return colorsBlock;
+}
+
 function generateColorItemHTML(value, name) {
   return `
-                      <div class="color-item">
-                        <div class="color" style="background: ${value}"></div>
-                        <h3 class="color-title color-data">${name}</h3>
-                        <div class="color-subtitle color-data">${value}</div>
-                      </div>
-                    `;
+    <div class="color-item">
+      <div class="color" style="background: ${value}"></div>
+      <h3 class="color-title color-data">${name}</h3>
+      <div class="color-subtitle color-data">${value}</div>
+    </div>
+    `;
 }
