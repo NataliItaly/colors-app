@@ -23,7 +23,7 @@ body {
   margin: 0px auto 40px;
 }
 
-.color-form {
+.form {
   display: flex;
   justify-content: flex-end;
   flex-wrap: wrap;
@@ -34,7 +34,15 @@ body {
   box-shadow: 0px 4px 11px 0px rgba(0, 0, 0, 0.15);
 }
 
-.form-box {
+.form__color-description {
+  align-self: center;
+}
+
+.form__color-data {
+  font-size: 12px;
+}
+
+.form__input {
   padding: 10px;
   border: 1px solid #d9dbdd;
   border-radius: 4px;
@@ -42,33 +50,78 @@ body {
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15);
 }
 
-.get-color-btn {
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.get-color-btn:hover {
-  background: #d9dbdd;
-}
-
-.color-description {
-  align-self: center;
-}
-
-.main-color-value,
-.main-color-name {
-  font-size: 12px;
-}
-
-.color-input {
+.form__input_color {
   padding: 0;
   width: 100px;
   height: 39px;
 }
 
-.color-select {
-  font-size: 18px;
-  color: #111827;
+.form__get-color-btn {
+  width: 170px;
+  height: 50px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: 0.3s;
+  background: linear-gradient(
+    to right,
+    red,
+    orange,
+    yellow,
+    green,
+    blue,
+    indigo,
+    violet
+  );
+  transition: 0.6s;
+}
+
+.form__get-color-btn:before {
+  content: "";
+  position: absolute;
+  width: 158px;
+  height: 40px;
+  top: 5px;
+  left: 5px;
+}
+
+.form__get-color-btn:after {
+  content: "Get Color Scheme";
+  position: absolute;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  color: black;
+  font-family: arial;
+  font-weight: 900;
+  font-size: 13px;
+  text-transform: uppercase;
+  background-image: linear-gradient(
+    to right,
+    red,
+    orange,
+    yellow,
+    green,
+    #8fb7e9,
+    indigo,
+    violet
+  );
+  background: transparent;
+}
+
+@keyframes move {
+  to {
+    background-position: 1000vh;
+  }
+}
+
+.form__get-color-btn:hover {
+  animation: move 30s linear infinite;
+}
+
+.form__get-color-btn:hover:after {
+  animation: move 29s linear infinite;
 }
 
 .create-title,
@@ -101,6 +154,7 @@ body {
   grid-column: 1 / -2;
   text-align: left;
   font-size: 20px;
+  font-weight: normal;
 }
 
 .delete-scheme-btn {

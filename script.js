@@ -1,8 +1,8 @@
-const colorForm = document.getElementById("color-form");
-const colorInput = document.getElementById("color-input");
-const mainColorValue = document.querySelector(".main-color-value");
-const mainColorName = document.querySelector(".main-color-name");
-const colorSelect = document.getElementById("color-select");
+const colorForm = document.getElementById("form");
+const colorInput = document.getElementById("color-range");
+const mainColorValue = document.getElementById("main-color-value");
+const mainColorName = document.getElementById("main-color-name");
+const modeSelect = document.getElementById("mode-select");
 const mainElement = document.querySelector("main");
 const colorSchemesBlock = document.querySelector(".color-schemes");
 const colorSchemeTitleInput = document.getElementById("color-scheme-title");
@@ -15,7 +15,7 @@ if (!userColorSchemes) {
 } else {
   userColorSchemes.forEach((scheme) => {
     colorSchemesBlock.prepend(generateColorScheme(scheme));
-    console.log(generateColorScheme(scheme));
+    //console.log(generateColorScheme(scheme));
   });
 }
 
@@ -24,7 +24,7 @@ console.log(userColorSchemes);
 colorForm.addEventListener("submit", function (event) {
   event.preventDefault();
   const color = colorInput.value.slice(1);
-  const colorsMode = colorSelect.value;
+  const colorsMode = modeSelect.value;
   const newColor = {
     colorValue: colorInput.value,
     mode: colorsMode,
@@ -38,6 +38,7 @@ colorForm.addEventListener("submit", function (event) {
       fetch(scheme.url)
         .then((response) => response.json())
         .then((scheme) => {
+          console.log(scheme);
           mainColorName.textContent = scheme.name.value;
           mainColorValue.textContent = scheme.hex.value;
 
@@ -69,12 +70,9 @@ colorForm.addEventListener("submit", function (event) {
                       colorValue: color.hex.value,
                       colorName: color.name.value,
                     });
-                    //console.log(color.hex.value);
-                    //console.log(color.name.value);
                   });
                   userColorSchemes.push(newColor);
-                  console.log(userColorSchemes);
-                  console.log(newColor);
+
                   localStorage.setItem(
                     "userColorSchemes",
                     JSON.stringify(userColorSchemes)
@@ -98,7 +96,6 @@ window.addEventListener("click", function (e) {
     const deleteSchemeBtns = document.querySelectorAll(".delete-scheme-btn");
     const colorBlocks = this.document.querySelectorAll(".colors-block");
     let index;
-    console.log(deleteSchemeBtns);
     deleteSchemeBtns.forEach((btn, i) => {
       if (e.target === btn) index = i;
     });
@@ -106,9 +103,8 @@ window.addEventListener("click", function (e) {
     colorBlocks[index].remove();
 
     // remove color from userColorShemes
-    console.log(userColorSchemes);
     userColorSchemes.splice(index, 1);
-    console.log(userColorSchemes);
+
     localStorage.setItem("userColorSchemes", JSON.stringify(userColorSchemes));
 
     console.log(colorBlocks.length);

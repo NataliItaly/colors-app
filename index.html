@@ -17,18 +17,18 @@
     <div class="container">
       <header>
         <h1 class="create-title">Create new color scheme</h1>
-        <form action="@" class="color-form" id="color-form">
-          <div class="color-description">
-            <p class="main-color-value color-data"></p>
-            <p class="main-color-name color-data"></p>
+        <form action="@" class="form" id="form">
+          <div class="form__color-description">
+            <p class="form__color-data" id="main-color-value"></p>
+            <p class="form__color-data" id="main-color-name"></p>
           </div>
           <input
             type="color"
             name="color-input"
-            class="form-box color-input"
-            id="color-input"
+            class="form__input form__input_color"
+            id="color-range"
           />
-          <select name="color-select" class="form-box" id="color-select">
+          <select name="mode-select" class="form__input" id="mode-select">
             <option value="monochrome">Monochrome</option>
             <option value="monochrome-dark">Monochrome-dark</option>
             <option value="monochrome-light">Monochrome-light</option>
@@ -39,14 +39,17 @@
             <option value="quad">Quad</option>
           </select>
           <input
-            class="color-title-input form-box"
+            class="form__input"
             type="text"
             name="color-scheme-title"
             id="color-scheme-title"
             value=""
             placeholder="Title you color scheme"
           />
-          <button class="get-color-btn form-box">Get color scheme</button>
+          <button
+            class="form__get-color-btn form__input"
+            id="get-color-btn"
+          ></button>
         </form>
         <h2 class="schemes-title">You don't have any color scheme yet...</h2>
       </header>
