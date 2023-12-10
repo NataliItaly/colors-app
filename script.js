@@ -19,6 +19,7 @@ if (!userColorSchemes) {
   });
 }
 
+schemesTitle.textContent = generateSchemesTitleHTML();
 console.log(userColorSchemes);
 
 colorForm.addEventListener("submit", function (event) {
@@ -50,10 +51,10 @@ colorForm.addEventListener("submit", function (event) {
 
           //console.log(newColor);
 
-          schemesTitle.textContent =
-            colorSchemesBlock.childNodes.length === 1
-              ? "Your color scheme"
-              : "Your color schemes";
+          schemesTitle.textContent = generateSchemesTitleHTML();
+          /* colorSchemesBlock.childNodes.length === 1
+            ? "Your color scheme"
+            : "Your color schemes"; */
           //colorSchemesBlock.prepend(generateColorScheme(scheme));
           fetch(
             `https://www.thecolorapi.com/scheme?hex=${color}&format=json&mode=${colorsMode}&count=5`
@@ -113,12 +114,12 @@ window.addEventListener("click", function (e) {
       mainColorValue.textContent = "";
       colorInput.value = "#000000";
     }
-    schemesTitle.textContent =
-      colorSchemesBlock.childNodes.length === 0
+    schemesTitle.textContent = generateSchemesTitleHTML();
+    /* colorSchemesBlock.childNodes.length === 0
         ? "You don't have any color scheme yet..."
         : colorSchemesBlock.childNodes.length === 1
         ? "Your color scheme"
-        : "Your color schemes";
+        : "Your color schemes"; */
   }
 });
 
@@ -150,4 +151,14 @@ function generateColorItemHTML(value, name) {
       <div class="color-subtitle color-data">${value}</div>
     </div>
     `;
+}
+
+function generateSchemesTitleHTML() {
+  const html =
+    userColorSchemes.length === 0
+      ? "You don't have color schemes yet..."
+      : userColorSchemes.length === 1
+      ? "Your color scheme"
+      : "Your color schemes";
+  return html;
 }
